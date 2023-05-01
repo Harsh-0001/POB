@@ -1,28 +1,59 @@
-alert("Hello World!");
-console.log("Hello World!");
-document.getElementById("submit").addEventListener("click", function() {
-    var name = document.getElementById("name").value;
-    var email = document.getElementById("email").value;
-    var message = document.getElementById("message").value;
-    let flag=0;
-   for(var i = 0; i < 3; i++) {
-        if(name == "" || email == "" || message == "") {
-             alert("Please fill in all fields.");
 
-             break;
-        } else {
-             alert("Thank you for your message.");
-               flag=1;
-    }   
-    if(flag===1)
-    {
-     var emailAddress = "recipient@example.com";
-     var emailSubject = email;
-     var emailBody = "Name: " + name + "%0D%0A" + "Message: " + message + "%0D%0A" + "Email: " + email + "%0D%0A" + "I would like to be contacted";
-     var mailtoUrl = "mailto:" + emailAddress + "?subject=" + emailSubject + "&body=" + emailBody;
-     window.location.href = mailtoUrl;
-     console.log("Message sent");
+for(var i = 0; i < 5; i++) {
+     document.querySelectorAll(".btn")[i].addEventListener("mouseover", function() {
+          this.style.color = "white";
+          this.style.backgroundColor = "rgb(0, 123, 255)";
+     });
+     document.querySelectorAll(".btn")[i].addEventListener("mouseout", function() {
+          this.style.color = "";
+          this.style.backgroundColor = "";
+     });
 }
-    }
+
+// Makinng all fields of the form as compulsory generated an alert message if the user clicks on the submit button without filling the form
+
+// Path: index.js
+
+
+document.querySelector(".btn").addEventListener("click", function() {
+     var fields = document.querySelectorAll(".form-control");
+     for(var i = 0; i < fields.length; i++) {
+          if(!fields[i].value) {
+               alert("Please fill all the fields!");
+          }
+     }
 });
 
+
+
+
+//If the user clicks on the submit button without filling the form, then the fields will be highlighted in red     
+// Path: index.js
+
+
+document.querySelector(".btn").addEventListener("click", function() {
+     var fields = document.querySelectorAll(".form-control");
+     for(var i = 0; i < fields.length; i++) {
+          if(!fields[i].value) {
+               fields[i].style.borderColor = "red";
+               alert("Please fill all the fields!");
+          }
+     }
+});
+
+//
+
+
+// Changing the background of navbar on hover
+// Path: index.js
+
+var nav = document.getElementById("nav");
+var navLinks = nav.getElementsByClassName("nav-link");
+for (var i = 0; i < navLinks.length; i++) {
+     navLinks[i].addEventListener("mouseover", function() {
+          this.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+     });
+     navLinks[i].addEventListener("mouseout", function() {
+          this.style.backgroundColor = "";
+     });
+     }
