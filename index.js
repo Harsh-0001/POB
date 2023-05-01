@@ -13,17 +13,25 @@ for(var i = 0; i < 5; i++) {
 // Makinng all fields of the form as compulsory generated an alert message if the user clicks on the submit button without filling the form
 
 // Path: index.js
-
-
-document.querySelector(".btn").addEventListener("click", function() {
-     var fields = document.querySelectorAll(".form-control");
-     for(var i = 0; i < fields.length; i++) {
-          if(!fields[i].value) {
-               alert("Please fill all the fields!");
-          }
+function validateForm() {
+     let form = document.getElementById("myForm");
+     let inputs = form.getElementsByClassName("compulsary");
+     
+     for (let i = 0; i < inputs.length; i++) {
+       if (inputs[i].value === "") {
+         alert(inputs[i].placeholder + " is required");
+         return false;
+       }
      }
-});
-
+     
+     if (!document.getElementById("gridCheck").checked) {
+       alert("You must agree to the terms and conditions");
+       return false;
+     }
+   
+     return true;
+   }
+   
 
 
 
