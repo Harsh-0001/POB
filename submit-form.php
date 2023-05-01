@@ -1,124 +1,64 @@
-<!-- <?php
+<?php
+// Define database connection variables
 $servername = "localhost";
-$username = "root";
-$password = "harsh2010";
-$dbname = "myDB";
+$username = "your_username";
+$password = "your_password";
+$dbname = "your_database_name";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = mysqli_connect($servername, $username, $password);
+
 // Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+if (!$conn) {
+  die("Connection failed: " . mysqli_connect_error());
 }
 
-// sql to create table
-$sql = "CREATE TABLE contributions (
-name VARCHAR(30) NOT NULL,
-email VARCHAR(50) primary key,
-phone INTEGER(10),
-contribution VARCHAR(30) NOT NULL,
+// Create database
+$sql = "CREATE DATABASE IF NOT EXISTS $dbname";
+if (mysqli_query($conn, $sql)) {
+  echo "Database created successfully";
+} else {
+  echo "Error creating database: " . mysqli_error($conn);
+}
+
+// Select database
+mysqli_select_db($conn, $dbname);
+
+// Create table
+$sql = "CREATE TABLE IF NOT EXISTS form_data (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+email VARCHAR(50) NOT NULL,
+password VARCHAR(50) NOT NULL,
+address VARCHAR(50) NOT NULL,
+address2 VARCHAR(50),
+city VARCHAR(50) NOT NULL,
+zip VARCHAR(10) NOT NULL
 )";
 
-echo "Table contributions created successfully";
-
-if ($conn->query($sql) === TRUE) {
-  echo "Table MyGuests created successfully";
+if (mysqli_query($conn, $sql)) {
+  echo "Table created successfully";
 } else {
-  echo "Error creating table: " . $conn->error;
+  echo "Error creating table: " . mysqli_error($conn);
 }
 
-$conn->close();
-?>  -->
+// Insert data into table
+if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['address']) && isset($_POST['city']) && isset($_POST['zip'])) {
+  $email = mysqli_real_escape_string($conn, $_POST['email']);
+  $password = mysqli_real_escape_string($conn, $_POST['password']);
+  $address = mysqli_real_escape_string($conn, $_POST['address']);
+  $address2 = mysqli_real_escape_string($conn, $_POST['address2']);
+  $city = mysqli_real_escape_string($conn, $_POST['city']);
+  $zip = mysqli_real_escape_string($conn, $_POST['zip']);
 
+  $sql = "INSERT INTO form_data (email, password, address, address2, city, zip) VALUES ('$email', '$password', '$address', '$address2', '$city', '$zip')";
 
-<!-- <?php
-$servername = "localhost";
-$username = "root";
-$password = "harsh2010";
-$dbname = "myDB";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+  if (mysqli_query($conn, $sql)) {
+    echo "Data inserted successfully";
+  } else {
+    echo "Error inserting data: " . mysqli_error($conn);
+  }
 }
 
-$fname  = $_POST["name"];
-$femail = $_POST["email"];
-$fphone = $_POST["phone"];
-$fcontribution = $_POST["contribution"];
-
-echo $fname;
-echo $femail;
-echo $fphone;
-echo $fcontribution;
-
-$sql = "INSERT INTO contributions(firstname, email, phone,contribution)
-VALUES ('$fname', '$femail', '$fphone','$fcontribution')";
-
-echo "New record created successfully";
-
-
-if ($conn->query($sql) === TRUE) {
-  echo "New record created successfully";
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
-}
-
-$conn->close();
-?>  -->
-
-
-<?php
-$servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "myDB";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "UPDATE MyGuests SET lastname='Doe' WHERE id=2";
-
-if ($conn->query($sql) === TRUE) {
-  echo "Record updated successfully";
-} else {
-  echo "Error updating record: " . $conn->error;
-}
-
-$conn->close();
-?> 
-
-
-<?php
-$servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "myDB";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-// sql to delete a record
-$sql = "DELETE FROM MyGuests WHERE id=3";
-
-if ($conn->query($sql) === TRUE) {
-  echo "Record deleted successfully";
-} else {
-  echo "Error deleting record: " . $conn->error;
-}
-
-$conn->close();
-?> 
-
-
-
+// Close connection
+mysqli_close($conn);
+?>
